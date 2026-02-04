@@ -52,9 +52,21 @@ def create_config(workload, bandwidth, latency):
     
     processor_types = list(first_node['costs'].keys())
     
+    # Transform nodes to include workload_intensity_GFLOPS
+    # This represents the computational intensity of the task
+    transformed_nodes = []
+    for node in workload['nodes']:
+        transformed_node = node.copy()
+        # Use average cost as workload intensity (normalized to GFLOPS)
+        costs = node.get('costs', {})
+        avg_cost = sum(costs.values()) / len(costs) if costs else 1.0
+        # Convert from ms to GFLOPS equivalent (1 ms = 1 GFLOP for normalization)
+        transformed_node['workload_intensity_GFLOPS'] = avg_cost
+        transformed_nodes.append(transformed_node)
+    
     config = {
         "workload": {
-            "nodes": workload['nodes'],
+            "nodes": transformed_nodes,
             "edges": workload.get('edges', [])
         },
         "system_config": {
