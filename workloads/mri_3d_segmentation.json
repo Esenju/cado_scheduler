@@ -1,0 +1,14 @@
+{
+  "workload_id": "mri_3d_segmentation",
+  "nodes": [
+    {"id": "DICOM_LOAD", "costs": {"CPU": 30, "NPU": 500}},
+    {"id": "DENOISE_3D", "costs": {"CPU": 300, "NPU": 60}},
+    {"id": "UNET_SEGMENT", "costs": {"CPU": 2500, "NPU": 110}},
+    {"id": "VOXEL_RENDER", "costs": {"CPU": 100, "NPU": 80}}
+  ],
+  "edges": [
+    {"from": "DICOM_LOAD", "to": "DENOISE_3D", "data_size_MB": 128.0},
+    {"from": "DENOISE_3D", "to": "UNET_SEGMENT", "data_size_MB": 128.0},
+    {"from": "UNET_SEGMENT", "to": "VOXEL_RENDER", "data_size_MB": 32.0}
+  ]
+}
