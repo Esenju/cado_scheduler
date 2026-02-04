@@ -1,0 +1,36 @@
+{
+  "workload_id": "yolov8_4k_inference",
+  "nodes": [
+    {
+      "id": "CAM_CAPTURE", 
+      "costs": {"CPU": 10, "NPU": 150}, 
+      "description": "I/O bound: Retrieving 4K raw buffer from ISP"
+    },
+    {
+      "id": "PRE_PROC", 
+      "costs": {"CPU": 15, "NPU": 40}, 
+      "description": "Resizing 4K to 640x640 + Normalization"
+    },
+    {
+      "id": "BACKBONE", 
+      "costs": {"CPU": 320, "NPU": 8}, 
+      "description": "Heavy Convolutions (Matrix Math)"
+    },
+    {
+      "id": "NECK_HEAD", 
+      "costs": {"CPU": 120, "NPU": 5}, 
+      "description": "Feature aggregation and prediction layers"
+    },
+    {
+      "id": "POST_NMS", 
+      "costs": {"CPU": 25, "NPU": 180}, 
+      "description": "Non-Maximum Suppression (Sorting/Logic)"
+    }
+  ],
+  "edges": [
+    {"from": "CAM_CAPTURE", "to": "PRE_PROC", "data_size_MB": 24.8, "name": "Raw 4K Frame"},
+    {"from": "PRE_PROC", "to": "BACKBONE", "data_size_MB": 1.2, "name": "Prepped Tensor"},
+    {"from": "BACKBONE", "to": "NECK_HEAD", "data_size_MB": 0.8, "name": "Feature Maps"},
+    {"from": "NECK_HEAD", "to": "POST_NMS", "data_size_MB": 0.05, "name": "Raw Detections"}
+  ]
+}
