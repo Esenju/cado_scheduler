@@ -1,0 +1,18 @@
+{
+  "workload_id": "monte_carlo_risk",
+  "nodes": [
+    {"id": "PORTFOLIO_LOAD", "costs": {"CPU": 20, "NPU": 100}},
+    {"id": "SIM_PATH_A", "costs": {"CPU": 400, "NPU": 40}},
+    {"id": "SIM_PATH_B", "costs": {"CPU": 400, "NPU": 40}},
+    {"id": "SIM_PATH_C", "costs": {"CPU": 400, "NPU": 40}},
+    {"id": "RISK_AGGREGATION", "costs": {"CPU": 50, "NPU": 300}}
+  ],
+  "edges": [
+    {"from": "PORTFOLIO_LOAD", "to": "SIM_PATH_A", "data_size_MB": 2.0},
+    {"from": "PORTFOLIO_LOAD", "to": "SIM_PATH_B", "data_size_MB": 2.0},
+    {"from": "PORTFOLIO_LOAD", "to": "SIM_PATH_C", "data_size_MB": 2.0},
+    {"from": "SIM_PATH_A", "to": "RISK_AGGREGATION", "data_size_MB": 0.5},
+    {"from": "SIM_PATH_B", "to": "RISK_AGGREGATION", "data_size_MB": 0.5},
+    {"from": "SIM_PATH_C", "to": "RISK_AGGREGATION", "data_size_MB": 0.5}
+  ]
+}

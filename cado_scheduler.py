@@ -25,9 +25,13 @@ class CADOScheduler:
     def get_computation_cost(self, node_id, processor):
         """Get computation time for a node on a specific processor"""
         node = self.nodes[node_id]
-        proc_config = self.system['processors'][processor]
         
-        # Calculate based on workload intensity and processor performance
+        # If node has costs dictionary, use it directly (already in ms)
+        if 'costs' in node and isinstance(node['costs'], dict):
+            return node['costs'].get(processor, 0)
+        
+        # Otherwise, calculate based on workload intensity and processor performance
+        proc_config = self.system['processors'][processor]
         base_time = node['workload_intensity_GFLOPS'] / proc_config['performance_GFLOPS']
         return base_time * 1000  # Convert to ms
     

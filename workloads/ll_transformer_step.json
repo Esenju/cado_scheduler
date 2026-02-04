@@ -1,0 +1,16 @@
+{
+  "workload_id": "llm_transformer_step",
+  "nodes": [
+    {"id": "TOKENIZE", "costs": {"CPU": 5, "NPU": 120}, "type": "LOGIC"},
+    {"id": "EMBEDDING", "costs": {"CPU": 10, "NPU": 2}, "type": "TENSOR"},
+    {"id": "ATTN_BLOCK_1", "costs": {"CPU": 850, "NPU": 15}, "type": "TENSOR"},
+    {"id": "ATTN_BLOCK_2", "costs": {"CPU": 850, "NPU": 15}, "type": "TENSOR"},
+    {"id": "LOGITS_SAMPLING", "costs": {"CPU": 8, "NPU": 90}, "type": "LOGIC"}
+  ],
+  "edges": [
+    {"from": "TOKENIZE", "to": "EMBEDDING", "data_size_MB": 0.001},
+    {"from": "EMBEDDING", "to": "ATTN_BLOCK_1", "data_size_MB": 0.5},
+    {"from": "ATTN_BLOCK_1", "to": "ATTN_BLOCK_2", "data_size_MB": 0.5},
+    {"from": "ATTN_BLOCK_2", "to": "LOGITS_SAMPLING", "data_size_MB": 0.1}
+  ]
+}
