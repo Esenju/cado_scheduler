@@ -20,7 +20,8 @@ from pathlib import Path
 # Add current directory to path for imports
 sys.path.append(str(Path(__file__).parent))
 
-from test_yolov8 import YOLOv8Scheduler
+#from test_yolov8 import YOLOv8Scheduler
+from cado_scheduler import CADOScheduler
 
 
 def load_workload(filepath):
@@ -245,7 +246,7 @@ For workload JSON format, see YOLOV8_USAGE_GUIDE.md
         print("RUNNING HEFT SCHEDULER...")
         print("="*80)
     
-    scheduler = YOLOv8Scheduler(json.dumps(config))
+    scheduler = CADOScheduler(json.dumps(config))
     results = scheduler.optimize()
     
     # Print results
